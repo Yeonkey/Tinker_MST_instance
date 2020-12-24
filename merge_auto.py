@@ -71,9 +71,9 @@ def makeRandomXY():
             cntY = cntY+1
             cntX = 0
         coordinates = list(itertools.chain(*coordinates)) #2차원배열로 변형
+        # coordinates = list(itertools.chain(*coordinates))
         terminalPart[i] = coordinates
         coordinates = [[] for i in range(k)]
-
 
 
 def dividePartition (powFlag): #좌하단 우상단 구하는 함수
@@ -124,7 +124,7 @@ def dividePartition (powFlag): #좌하단 우상단 구하는 함수
 dividePartition (powFlag)
 
 mergeNum = []
-def chooseMergePartition ():
+def chooseMergePartition (): #병합할 파티션 구하기
     global n, mergeNum
     while len(mergeNum) < (powFlag*powFlag-n):
         num = randint(0, (powFlag*powFlag)-(powFlag+1))
@@ -136,17 +136,50 @@ def chooseMergePartition ():
 
 
 chooseMergePartition()
-#vector = np.array([?, ?]) #좌표계 변형 벡터
+
+# 좌표값, 좌하단우상단 병합
+def doMerge ():
+    global terminalPart, dPart
+    reversenum = (powFlag*powFlag)-1
+    for reversenum in range((powFlag*powFlag)-1, -1, -1):
+        while reversenum in mergeNum:
+            terminalPart[reversenum] = terminalPart[reversenum] + terminalPart[reversenum+powFlag]
+            terminalPart[reversenum+4] = [[]]
+            dPart[reversenum].extend(dPart[reversenum+4])
+            dPart[reversenum] = dPart[reversenum][0:2] + dPart[reversenum][6:8]
+            dPart[reversenum+4] = []
+            break
+    for i in range (len(terminalPart)):
+        if len(terminalPart[i]) > 1:
+            mergedPartitionTerminal.append(terminalPart[i])
+            mergedPartitiondPart.append(dPart[i])
+
+def makeFourCoor():
+    for i in range(len(mergedPartitiondPart)):
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][0])
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][1]) #좌하단
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3])
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2]) #우하단
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][0])
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #좌상단
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2])
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #우상단
 
 
 
-#def doMerge ():
 
+mergedPartitionTerminal = []
+mergedPartitiondPart = []
 makeRandomXY()
-print(dPart)
-print(randomAxisX)
-print(randomAxisY)
-print(terminalPart)
+doMerge()
+mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
+
+makeFourCoor()
+
+
+
+
+
 
 
 
