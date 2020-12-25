@@ -165,7 +165,31 @@ def makeFourCoor():
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2])
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #우상단
 
-
+def findNeighbors():
+    for i in range(len(mergedPartitiondPart)): # 0~mergedPartitiondPart = P
+        for j in range(len(mergedPartitiondPart)): # P' (인접인지 확인할  대상)
+            if (i==j):
+                pass
+            elif ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][2]) and
+                  ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][1]) or
+                   (mergedPartitiondPart[j][3] == mergedPartitiondPart[i][3]))):
+                #우측에 인접한 놈들을 찾아냈다
+                neighborPart[i].append(j)
+            elif ((mergedPartitiondPart[j][2] == mergedPartitiondPart[i][0]) and
+                  ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][1]) or
+                   (mergedPartitiondPart[j][3] == mergedPartitiondPart[i][3]))):
+                #좌측에 인접한 놈들을 찾아냈다
+                neighborPart[i].append(j)
+            elif ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][3]) and
+                  ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][0]) or
+                   (mergedPartitiondPart[j][2] == mergedPartitiondPart[i][2]))):
+                #상측에 인접한 놈들을 찾아냈다
+                neighborPart[i].append(j)
+            elif ((mergedPartitiondPart[j][3] == mergedPartitiondPart[i][1]) and
+                  ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][0]) or
+                   (mergedPartitiondPart[j][2] == mergedPartitiondPart[i][2]))):
+                #하측에 인접한 놈들을 찾아냈다
+                neighborPart[i].append(j)
 
 
 mergedPartitionTerminal = []
@@ -173,7 +197,8 @@ mergedPartitiondPart = []
 makeRandomXY()
 doMerge()
 mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
-
+neighborPart = [[] for i in range(len(mergedPartitiondPart))]
+findNeighbors()
 makeFourCoor()
 
 
