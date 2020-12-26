@@ -158,38 +158,128 @@ def makeFourCoor():
     for i in range(len(mergedPartitiondPart)):
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][0])
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][1]) #좌하단
-        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3])
-        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2]) #우하단
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2])
+        mergedPartitionFourPart[i].append(mergedPartitiondPart[i][1]) #우하단
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][0])
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #좌상단
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2])
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #우상단
+
+
+
 
 def findNeighbors():
     for i in range(len(mergedPartitiondPart)): # 0~mergedPartitiondPart = P
         for j in range(len(mergedPartitiondPart)): # P' (인접인지 확인할  대상)
             if (i==j):
                 pass
-            elif ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][2]) and
-                  ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][1]) or
-                   (mergedPartitiondPart[j][3] == mergedPartitiondPart[i][3]))):
+            if ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][2]) and
+                    ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][1]) or
+                     (mergedPartitiondPart[j][3] == mergedPartitiondPart[i][3]))):
                 #우측에 인접한 놈들을 찾아냈다
                 neighborPart[i].append(j)
+                if (((mergedPartitionFourPart[i][7] == mergedPartitionFourPart[j][5]) and # 상단
+                     (mergedPartitionFourPart[i][3] < mergedPartitionFourPart[j][1])) or
+                        ((mergedPartitionFourPart[i][3] == mergedPartitionFourPart[j][1]) and #하단
+                         (mergedPartitionFourPart[i][7] > mergedPartitionFourPart[j][5]))):
+                    neighborPart[i].append(mergedPartitionFourPart[i][2])
+                    neighborPart[i].append(mergedPartitionFourPart[i][3])
+                    neighborPart[i].append(mergedPartitionFourPart[i][6])
+                    neighborPart[i].append(mergedPartitionFourPart[i][7])
+                else:
+                    neighborPart[i].append(mergedPartitionFourPart[j][0])
+                    neighborPart[i].append(mergedPartitionFourPart[j][1])
+                    neighborPart[i].append(mergedPartitionFourPart[j][4])
+                    neighborPart[i].append(mergedPartitionFourPart[j][5])
+                    #우측에 인접한 놈들에대한 인접좌표를 찾아냈다.
+            elif ((mergedPartitionFourPart[i][2] == mergedPartitionFourPart[j][0]) and
+                  (mergedPartitionFourPart[i][7] > mergedPartitionFourPart[j][5]) and #우측 중단
+                  (mergedPartitionFourPart[i][3] < mergedPartitionFourPart[j][1])) :
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][2])
+                neighborPart[i].append(mergedPartitionFourPart[i][3])
+                neighborPart[i].append(mergedPartitionFourPart[i][6])
+                neighborPart[i].append(mergedPartitionFourPart[i][7])
+            elif ((mergedPartitionFourPart[i][2] == mergedPartitionFourPart[j][0]) and
+                  (mergedPartitionFourPart[i][7] < mergedPartitionFourPart[j][5]) and #우측위로엇갈
+                  (mergedPartitionFourPart[i][7] > mergedPartitionFourPart[j][1])):
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][2])
+                neighborPart[i].append(mergedPartitionFourPart[i][3])
+                neighborPart[i].append(mergedPartitionFourPart[j][4])
+                neighborPart[i].append(mergedPartitionFourPart[j][5])
+            elif ((mergedPartitionFourPart[i][2] == mergedPartitionFourPart[j][0]) and
+                  (mergedPartitionFourPart[i][3] < mergedPartitionFourPart[j][5]) and #우측아래로엇갈
+                  (mergedPartitionFourPart[i][3] > mergedPartitionFourPart[j][1])):
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[j][0])
+                neighborPart[i].append(mergedPartitionFourPart[j][1])
+                neighborPart[i].append(mergedPartitionFourPart[i][6])
+                neighborPart[i].append(mergedPartitionFourPart[i][7])
+            ############################################################################우
             elif ((mergedPartitiondPart[j][2] == mergedPartitiondPart[i][0]) and
                   ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][1]) or
                    (mergedPartitiondPart[j][3] == mergedPartitiondPart[i][3]))):
                 #좌측에 인접한 놈들을 찾아냈다
                 neighborPart[i].append(j)
+                if (((mergedPartitionFourPart[i][5] == mergedPartitionFourPart[j][7]) and #상단
+                     (mergedPartitionFourPart[i][1] < mergedPartitionFourPart[j][3])) or
+                        ((mergedPartitionFourPart[i][1] == mergedPartitionFourPart[j][3]) and #하단
+                         (mergedPartitionFourPart[i][5] > mergedPartitionFourPart[j][7]))):
+                    neighborPart[i].append(mergedPartitionFourPart[i][0])
+                    neighborPart[i].append(mergedPartitionFourPart[i][1])
+                    neighborPart[i].append(mergedPartitionFourPart[i][4])
+                    neighborPart[i].append(mergedPartitionFourPart[i][5])
+                else:
+                    neighborPart[i].append(mergedPartitionFourPart[j][2])
+                    neighborPart[i].append(mergedPartitionFourPart[j][3])
+                    neighborPart[i].append(mergedPartitionFourPart[j][6])
+                    neighborPart[i].append(mergedPartitionFourPart[j][7])
+            elif ((mergedPartitionFourPart[i][0] == mergedPartitionFourPart[j][2]) and
+                  (mergedPartitionFourPart[i][7] < mergedPartitionFourPart[j][5]) and
+                  (mergedPartitionFourPart[i][3] > mergedPartitionFourPart[j][1])) : #중단
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][0])
+                neighborPart[i].append(mergedPartitionFourPart[i][1])
+                neighborPart[i].append(mergedPartitionFourPart[i][4])
+                neighborPart[i].append(mergedPartitionFourPart[i][5])
+            elif ((mergedPartitionFourPart[i][0] == mergedPartitionFourPart[j][2]) and
+                  (mergedPartitionFourPart[j][7] > mergedPartitionFourPart[i][5]) and
+                  (mergedPartitionFourPart[j][3] < mergedPartitionFourPart[i][5])):
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][0])
+                neighborPart[i].append(mergedPartitionFourPart[i][1])
+                neighborPart[i].append(mergedPartitionFourPart[j][6])
+                neighborPart[i].append(mergedPartitionFourPart[j][7]) #좌측위로엇갈
+            elif ((mergedPartitionFourPart[i][0] == mergedPartitionFourPart[j][2]) and
+                  (mergedPartitionFourPart[j][7] > mergedPartitionFourPart[i][1]) and
+                  (mergedPartitionFourPart[j][3] < mergedPartitionFourPart[i][1])):
+                neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[j][2])
+                neighborPart[i].append(mergedPartitionFourPart[j][3])
+                neighborPart[i].append(mergedPartitionFourPart[i][4])
+                neighborPart[i].append(mergedPartitionFourPart[i][5]) #좌측아래로엇갈
+            ###########################################################################################좌
             elif ((mergedPartitiondPart[j][1] == mergedPartitiondPart[i][3]) and
                   ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][0]) or
                    (mergedPartitiondPart[j][2] == mergedPartitiondPart[i][2]))):
                 #상측에 인접한 놈들을 찾아냈다
                 neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][4])
+                neighborPart[i].append(mergedPartitionFourPart[i][5])
+                neighborPart[i].append(mergedPartitionFourPart[i][6])
+                neighborPart[i].append(mergedPartitionFourPart[i][7])
+
             elif ((mergedPartitiondPart[j][3] == mergedPartitiondPart[i][1]) and
                   ((mergedPartitiondPart[j][0] == mergedPartitiondPart[i][0]) or
                    (mergedPartitiondPart[j][2] == mergedPartitiondPart[i][2]))):
                 #하측에 인접한 놈들을 찾아냈다
                 neighborPart[i].append(j)
+                neighborPart[i].append(mergedPartitionFourPart[i][0])
+                neighborPart[i].append(mergedPartitionFourPart[i][1])
+                neighborPart[i].append(mergedPartitionFourPart[i][2])
+                neighborPart[i].append(mergedPartitionFourPart[i][3])
+
 
 
 mergedPartitionTerminal = []
@@ -198,11 +288,15 @@ makeRandomXY()
 doMerge()
 mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
 neighborPart = [[] for i in range(len(mergedPartitiondPart))]
-findNeighbors()
+finalPart = [[] for i in range(len(mergedPartitiondPart))]
 makeFourCoor()
-
-
-
+findNeighbors()
+'''
+print(mergeNum)
+print(randomAxisX)
+print(randomAxisY)
+print(neighborPart)
+'''
 
 
 
