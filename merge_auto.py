@@ -280,6 +280,21 @@ def findNeighbors():
                 neighborPart[i].append(mergedPartitionFourPart[i][2])
                 neighborPart[i].append(mergedPartitionFourPart[i][3])
 
+def addPartitionNum():
+    global mergedPartitionTerminal
+    subArray = [[] for i in range(len(mergedPartitiondPart))]
+    for i in range(len(mergedPartitiondPart)):
+        for j in range(len(mergedPartitionTerminal[i])):
+            subArray[i].append(i)
+    subArray = np.array(subArray)
+    mergedPartitionTerminal = np.array(mergedPartitionTerminal)
+    for i in range (len(mergedPartitiondPart)):
+        mergedPartitionTerminal[i] = np.c_[mergedPartitionTerminal[i], subArray[i]]
+    mergedPartitionTerminal = mergedPartitionTerminal.tolist()
+    mergedPartitionTerminal = list(itertools.chain(*mergedPartitionTerminal)) #2차원 배열로 변형
+    mergedPartitionTerminal = list(itertools.chain(*mergedPartitionTerminal)) #2차원 배열로 변형
+
+
 
 
 mergedPartitionTerminal = []
@@ -288,15 +303,32 @@ makeRandomXY()
 doMerge()
 mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
 neighborPart = [[] for i in range(len(mergedPartitiondPart))]
-finalPart = [[] for i in range(len(mergedPartitiondPart))]
+finalPartTerminal = [[] for i in range(len(mergedPartitiondPart))]
 makeFourCoor()
 findNeighbors()
-'''
-print(mergeNum)
-print(randomAxisX)
-print(randomAxisY)
-print(neighborPart)
-'''
+
+addPartitionNum()
+
+
+fw=open("Tinkerd_Mst_Instance.txt", "w")
+for i in range (len(neighborPart)):
+    fw.write(str(i) + ' ')
+    fw.write(str(int(len(neighborPart[i])/5)) + ' ')
+    for j in range(len(neighborPart[i])):
+        fw.write(str(neighborPart[i][j]) + ' ')
+    fw.write(str('\n'))
+
+j = 1
+while j <= len(mergedPartitionTerminal):
+    fw.write(str(mergedPartitionTerminal[j-1]) + ' ')
+    fw.write(str(mergedPartitionTerminal[j]) + ' ')
+    fw.write(str(mergedPartitionTerminal[j+1]))
+    fw.write('\n')
+    j += 3
+
+fw.close()
+
+
 
 
 
