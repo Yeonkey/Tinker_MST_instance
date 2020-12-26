@@ -19,10 +19,6 @@ def findBiggerThanPow():
     while (cnt*cnt < n):
         cnt = cnt+1
     return cnt
-
-powFlag = findBiggerThanPow() #제곱근수
-terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
-
 def makeRandomCoorForAxis(randomCoorForAxis):
     global r
     flag = int(r/(powFlag-1))
@@ -36,6 +32,8 @@ def makeRandomCoorForAxis(randomCoorForAxis):
         subFirst = subFirst + subFlag
     randomCoorForAxis.sort()
 
+powFlag = findBiggerThanPow() #제곱근수
+terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
 randomAxisX = []
 randomAxisY = []
 
