@@ -1,3 +1,5 @@
+
+
 from random import *
 import numpy as np
 import itertools
@@ -327,10 +329,6 @@ while j <= len(mergedPartitionTerminal):
     j += 3
 
 fw.close()
-
-
-
-
 
 
 
