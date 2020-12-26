@@ -322,7 +322,7 @@ j = 1
 while j <= len(mergedPartitionTerminal):
     fw.write(str(mergedPartitionTerminal[j-1]) + ' ')
     fw.write(str(mergedPartitionTerminal[j]) + ' ')
-    fw.write(str(mergedPartitionTerminal[j+1]))
+    fw.write(str(int(mergedPartitionTerminal[j+1])))
     fw.write('\n')
     j += 3
 
