@@ -312,6 +312,7 @@ findNeighbors()
 addPartitionNum()
 
 
+
 fw=open("Tinkerd_Mst_Instance.txt", "w")
 for i in range (len(neighborPart)):
     fw.write(str(i) + ' ')
