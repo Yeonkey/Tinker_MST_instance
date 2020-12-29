@@ -3,23 +3,12 @@ import numpy as np
 import itertools
 import matplotlib.pyplot as plt
 
-
-r = int(input("좌표평면 r : "))
-n = int(input("파티션 개수 n : "))
-k = int(input("파티션 당 터미널 개수 k : "))
-
-
-coordinates = [[] for i in range(k)]
-
 def findBiggerThanPow():
     global n
     cnt = 1
     while (cnt*cnt < n):
         cnt = cnt+1
     return cnt
-
-powFlag = findBiggerThanPow() #제곱근수
-terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
 
 def makeRandomCoorForAxis(randomCoorForAxis):
     global r
@@ -33,21 +22,6 @@ def makeRandomCoorForAxis(randomCoorForAxis):
         flag = flag + subFlag
         subFirst = subFirst + subFlag
     randomCoorForAxis.sort()
-
-randomAxisX = []
-randomAxisY = []
-
-makeRandomCoorForAxis(randomAxisX)
-makeRandomCoorForAxis(randomAxisY)
-
-nPart = [[] for i in range(powFlag)]#dividePart를 통해 좌하단 우상단 저장하기위한 보조 배열
-dPart = [[] for i in range(powFlag*powFlag)] #dividePart를 통해 좌하단 우상단 저장하는 배열
-
-
-num = 0
-q = 0
-p = 4
-cnt = 0
 
 def makeRandomXY():
     global coordinates
@@ -74,7 +48,6 @@ def makeRandomXY():
         # coordinates = list(itertools.chain(*coordinates))
         terminalPart[i] = coordinates
         coordinates = [[] for i in range(k)]
-
 
 def dividePartition (powFlag): #좌하단 우상단 구하는 함수
     global num, p, q, cnt
@@ -146,9 +119,6 @@ def dividePartition (powFlag): #좌하단 우상단 구하는 함수
             num = num+1
             cnt = 0
 
-dividePartition (powFlag)
-
-mergeNum = []
 def chooseMergePartition (): #병합할 파티션 구하기
     global n, mergeNum
     while len(mergeNum) < (powFlag*powFlag-n):
@@ -159,10 +129,6 @@ def chooseMergePartition (): #병합할 파티션 구하기
             mergeNum = list(mSet)
     #mergeNum.sort()
     #mergeNum.reverse()
-
-
-
-chooseMergePartition()
 
 # 좌표값, 좌하단우상단 병합
 def doMerge ():
@@ -191,9 +157,6 @@ def makeFourCoor():
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #좌상단
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][2])
         mergedPartitionFourPart[i].append(mergedPartitiondPart[i][3]) #우상단
-
-
-
 
 def findNeighbors():
     for i in range(len(mergedPartitiondPart)): # 0~mergedPartitiondPart = P
@@ -321,7 +284,35 @@ def addPartitionNum():
     mergedPartitionTerminal = list(itertools.chain(*mergedPartitionTerminal)) #2차원 배열로 변형
     mergedPartitionTerminal = list(itertools.chain(*mergedPartitionTerminal)) #2차원 배열로 변형
 
+######main########
+r = int(input("좌표평면 r : "))
+n = int(input("파티션 개수 n : "))
+k = int(input("파티션 당 터미널 개수 k : "))
 
+coordinates = [[] for i in range(k)]
+
+powFlag = findBiggerThanPow() #제곱근수
+terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
+
+randomAxisX = []
+randomAxisY = []
+
+makeRandomCoorForAxis(randomAxisX)
+makeRandomCoorForAxis(randomAxisY)
+
+nPart = [[] for i in range(powFlag)]#dividePart를 통해 좌하단 우상단 저장하기위한 보조 배열
+dPart = [[] for i in range(powFlag*powFlag)] #dividePart를 통해 좌하단 우상단 저장하는 배열
+
+
+num = 0
+q = 0
+p = 4
+cnt = 0
+dividePartition (powFlag)
+
+mergeNum = []
+
+chooseMergePartition()
 
 
 mergedPartitionTerminal = []
