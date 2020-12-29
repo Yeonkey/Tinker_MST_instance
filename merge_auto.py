@@ -1,5 +1,3 @@
-
-
 from random import *
 import numpy as np
 import itertools
@@ -19,6 +17,10 @@ def findBiggerThanPow():
     while (cnt*cnt < n):
         cnt = cnt+1
     return cnt
+
+powFlag = findBiggerThanPow() #제곱근수
+terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
+
 def makeRandomCoorForAxis(randomCoorForAxis):
     global r
     flag = int(r/(powFlag-1))
@@ -32,8 +34,6 @@ def makeRandomCoorForAxis(randomCoorForAxis):
         subFirst = subFirst + subFlag
     randomCoorForAxis.sort()
 
-powFlag = findBiggerThanPow() #제곱근수
-terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
 randomAxisX = []
 randomAxisY = []
 
@@ -110,6 +110,31 @@ def dividePartition (powFlag): #좌하단 우상단 구하는 함수
                 nPart[i].append(randomAxisY[5])
                 nPart[i].append(randomAxisX[j+1])
                 nPart[i].append(randomAxisY[6])
+            elif (i == 6):
+                nPart[i].append(randomAxisX[j])
+                nPart[i].append(randomAxisY[6])
+                nPart[i].append(randomAxisX[j+1])
+                nPart[i].append(randomAxisY[7])
+            elif (i == 7):
+                nPart[i].append(randomAxisX[j])
+                nPart[i].append(randomAxisY[7])
+                nPart[i].append(randomAxisX[j+1])
+                nPart[i].append(randomAxisY[8])
+            elif (i == 8):
+                nPart[i].append(randomAxisX[j])
+                nPart[i].append(randomAxisY[8])
+                nPart[i].append(randomAxisX[j+1])
+                nPart[i].append(randomAxisY[9])
+            elif (i == 9):
+                nPart[i].append(randomAxisX[j])
+                nPart[i].append(randomAxisY[9])
+                nPart[i].append(randomAxisX[j+1])
+                nPart[i].append(randomAxisY[10])
+            elif (i == 10):
+                nPart[i].append(randomAxisX[j])
+                nPart[i].append(randomAxisY[10])
+                nPart[i].append(randomAxisX[j+1])
+                nPart[i].append(randomAxisY[11])
     for i in range (powFlag*powFlag):
         dPart[i] = nPart[num][q:p]
         q = q+4
@@ -286,7 +311,7 @@ def addPartitionNum():
     for i in range(len(mergedPartitiondPart)):
         for j in range(len(mergedPartitionTerminal[i])):
             subArray[i].append(i)
-    subArray = np.array(subArray)
+    subArray = np.array(subArray, dtype="object")
     mergedPartitionTerminal = np.array(mergedPartitionTerminal)
     for i in range (len(mergedPartitiondPart)):
         mergedPartitionTerminal[i] = np.c_[mergedPartitionTerminal[i], subArray[i]]
@@ -310,7 +335,6 @@ findNeighbors()
 addPartitionNum()
 
 
-
 fw=open("Tinkerd_Mst_Instance.txt", "w")
 for i in range (len(neighborPart)):
     fw.write(str(i) + ' ')
@@ -323,13 +347,9 @@ j = 1
 while j <= len(mergedPartitionTerminal):
     fw.write(str(mergedPartitionTerminal[j-1]) + ' ')
     fw.write(str(mergedPartitionTerminal[j]) + ' ')
-    fw.write(str(int(mergedPartitionTerminal[j+1])))
+    fw.write(str(mergedPartitionTerminal[j+1]))
     fw.write('\n')
     j += 3
-
 fw.close()
-
-
-
 
 
