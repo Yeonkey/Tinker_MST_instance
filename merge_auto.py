@@ -157,6 +157,8 @@ def chooseMergePartition (): #병합할 파티션 구하기
         if num in mergeNum: #중복제거
             mSet = set(mergeNum)
             mergeNum = list(mSet)
+    #mergeNum.sort()
+    #mergeNum.reverse()
 
 
 
@@ -169,10 +171,10 @@ def doMerge ():
     for reversenum in range((powFlag*powFlag)-1, -1, -1):
         while reversenum in mergeNum:
             terminalPart[reversenum] = terminalPart[reversenum] + terminalPart[reversenum+powFlag]
-            terminalPart[reversenum+4] = [[]]
-            dPart[reversenum].extend(dPart[reversenum+4])
+            terminalPart[reversenum+powFlag] = [[]]
+            dPart[reversenum].extend(dPart[reversenum+powFlag])
             dPart[reversenum] = dPart[reversenum][0:2] + dPart[reversenum][6:8]
-            dPart[reversenum+4] = []
+            dPart[reversenum+powFlag] = []
             break
     for i in range (len(terminalPart)):
         if len(terminalPart[i]) > 1:
@@ -328,10 +330,9 @@ makeRandomXY()
 doMerge()
 mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
 neighborPart = [[] for i in range(len(mergedPartitiondPart))]
-finalPartTerminal = [[] for i in range(len(mergedPartitiondPart))]
+finalPartTerminal = []
 makeFourCoor()
 findNeighbors()
-
 addPartitionNum()
 
 
