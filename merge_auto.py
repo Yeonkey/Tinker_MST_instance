@@ -1,7 +1,8 @@
 from random import *
 import numpy as np
 import itertools
-import matplotlib.pyplot as plt
+import os
+#import matplotlib.pyplot as plt
 
 def findBiggerThanPow():
     global n
@@ -53,61 +54,10 @@ def dividePartition (powFlag): #좌하단 우상단 구하는 함수
     global num, p, q, cnt
     for i in range (powFlag):
         for j in range (powFlag):
-            if (i == 0):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[0])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[1])
-            elif (i == 1):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[1])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[2])
-            elif (i == 2):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[2])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[3])
-            elif (i == 3):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[3])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[4])
-            elif (i == 4):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[4])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[5])
-            elif (i == 5):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[5])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[6])
-            elif (i == 6):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[6])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[7])
-            elif (i == 7):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[7])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[8])
-            elif (i == 8):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[8])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[9])
-            elif (i == 9):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[9])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[10])
-            elif (i == 10):
-                nPart[i].append(randomAxisX[j])
-                nPart[i].append(randomAxisY[10])
-                nPart[i].append(randomAxisX[j+1])
-                nPart[i].append(randomAxisY[11])
+            nPart[i].append(randomAxisX[j])
+            nPart[i].append(randomAxisY[i])
+            nPart[i].append(randomAxisX[j+1])
+            nPart[i].append(randomAxisY[i+1])
     for i in range (powFlag*powFlag):
         dPart[i] = nPart[num][q:p]
         q = q+4
@@ -130,8 +80,7 @@ def chooseMergePartition (): #병합할 파티션 구하기
     #mergeNum.sort()
     #mergeNum.reverse()
 
-# 좌표값, 좌하단우상단 병합
-def doMerge ():
+def doMerge (): # 좌표값, 좌하단우상단 병합
     global terminalPart, dPart
     reversenum = (powFlag*powFlag)-1
     for reversenum in range((powFlag*powFlag)-1, -1, -1):
@@ -277,7 +226,7 @@ def addPartitionNum():
         for j in range(len(mergedPartitionTerminal[i])):
             subArray[i].append(i)
     subArray = np.array(subArray, dtype="object")
-    mergedPartitionTerminal = np.array(mergedPartitionTerminal)
+    mergedPartitionTerminal = np.array(mergedPartitionTerminal, dtype='object')
     for i in range (len(mergedPartitiondPart)):
         mergedPartitionTerminal[i] = np.c_[mergedPartitionTerminal[i], subArray[i]]
     mergedPartitionTerminal = mergedPartitionTerminal.tolist()
@@ -285,13 +234,20 @@ def addPartitionNum():
     mergedPartitionTerminal = list(itertools.chain(*mergedPartitionTerminal)) #2차원 배열로 변형
 
 ######main########
+
+
+###인풋받기###
 r = int(input("좌표평면 r : "))
 n = int(input("파티션 개수 n : "))
 k = int(input("파티션 당 터미널 개수 k : "))
+portal = int(input("포탈의 수 portal : "))
+
+###인풋받기###
 
 coordinates = [[] for i in range(k)]
 
 powFlag = findBiggerThanPow() #제곱근수
+terminalNum = powFlag * powFlag * k
 terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
 
 randomAxisX = []
@@ -303,7 +259,6 @@ makeRandomCoorForAxis(randomAxisY)
 nPart = [[] for i in range(powFlag)]#dividePart를 통해 좌하단 우상단 저장하기위한 보조 배열
 dPart = [[] for i in range(powFlag*powFlag)] #dividePart를 통해 좌하단 우상단 저장하는 배열
 
-
 num = 0
 q = 0
 p = 4
@@ -314,20 +269,21 @@ mergeNum = []
 
 chooseMergePartition()
 
-
 mergedPartitionTerminal = []
 mergedPartitiondPart = []
 makeRandomXY()
 doMerge()
 mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
 neighborPart = [[] for i in range(len(mergedPartitiondPart))]
-finalPartTerminal = []
 makeFourCoor()
 findNeighbors()
 addPartitionNum()
 
-
-fw=open("Tinkerd_Mst_Instance.txt", "w")
+##파일입출력
+fw=open("Tinkerd_MST_Instance.txt", "w")
+fw.write(str(n) + '\n')
+fw.write(str(terminalNum) + '\n')
+fw.write(str(portal) + '\n')
 for i in range (len(neighborPart)):
     fw.write(str(i) + ' ')
     fw.write(str(int(len(neighborPart[i])/5)) + ' ')
@@ -343,5 +299,6 @@ while j <= len(mergedPartitionTerminal):
     fw.write('\n')
     j += 3
 fw.close()
+os.rename('Tinkerd_MST_Instance.txt', 'P' + str(n) + '_' + str(terminalNum) + '_' + str(portal) + '.txt')
 
 
