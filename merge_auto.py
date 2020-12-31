@@ -50,6 +50,34 @@ def makeRandomXY():
         terminalPart[i] = coordinates
         coordinates = [[] for i in range(k)]
 
+def findAxisRange(num):
+    cntX = cntY = 0
+    flag = powFlag
+    while True:
+        if (num < flag):
+            break
+        flag = flag + powFlag
+        cntY = cntY + 1
+    flag = flag - powFlag
+    while True:
+
+        if (num == flag):
+            #cntX = cntX + 1
+            break
+        flag = flag + 1
+        cntX = cntX + 1
+    return cntX, cntY
+
+def addSubTerminal(kSub):
+    for i in range (kSub):
+        pNum = randint(0, (powFlag*powFlag)-1)
+        cntX, cntY = findAxisRange(pNum)
+        #print(cntX, cntY)
+        coorX = round(uniform(randomAxisX[cntX], randomAxisX[cntX+1]), 2)
+        coorY = round(uniform(randomAxisY[cntY], randomAxisY[cntY+1]), 2)
+        coorSub = [coorX, coorY]
+        terminalPart[pNum].append(coorSub)
+
 def dividePartition (powFlag): #좌하단 우상단 구하는 함수
     global num, p, q, cnt
     for i in range (powFlag):
@@ -226,7 +254,7 @@ def addPartitionNum():
         for j in range(len(mergedPartitionTerminal[i])):
             subArray[i].append(i)
     subArray = np.array(subArray, dtype="object")
-    mergedPartitionTerminal = np.array(mergedPartitionTerminal, dtype='object')
+    mergedPartitionTerminal = np.array(mergedPartitionTerminal, dtype="object")
     for i in range (len(mergedPartitiondPart)):
         mergedPartitionTerminal[i] = np.c_[mergedPartitionTerminal[i], subArray[i]]
     mergedPartitionTerminal = mergedPartitionTerminal.tolist()
@@ -239,66 +267,67 @@ def addPartitionNum():
 ###인풋받기###
 r = int(input("좌표평면 r : "))
 n = int(input("파티션 개수 n : "))
-k = int(input("파티션 당 터미널 개수 k : "))
+terminalNum = int(input("터미널 개수 terminalNum : "))
 portal = int(input("포탈의 수 portal : "))
-
-###인풋받기###
-
-coordinates = [[] for i in range(k)]
+count = int(input("인풋파일 몇개? count :"))
 
 powFlag = findBiggerThanPow() #제곱근수
-terminalNum = powFlag * powFlag * k
-terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
-
-randomAxisX = []
-randomAxisY = []
-
-makeRandomCoorForAxis(randomAxisX)
-makeRandomCoorForAxis(randomAxisY)
-
-nPart = [[] for i in range(powFlag)]#dividePart를 통해 좌하단 우상단 저장하기위한 보조 배열
-dPart = [[] for i in range(powFlag*powFlag)] #dividePart를 통해 좌하단 우상단 저장하는 배열
-
-num = 0
-q = 0
-p = 4
-cnt = 0
-dividePartition (powFlag)
-
-mergeNum = []
-
-chooseMergePartition()
-
-mergedPartitionTerminal = []
-mergedPartitiondPart = []
-makeRandomXY()
-doMerge()
-mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
-neighborPart = [[] for i in range(len(mergedPartitiondPart))]
-makeFourCoor()
-findNeighbors()
-addPartitionNum()
-
-##파일입출력
-fw=open("Tinkerd_MST_Instance.txt", "w")
-fw.write(str(n) + '\n')
-fw.write(str(terminalNum) + '\n')
-fw.write(str(portal) + '\n')
-for i in range (len(neighborPart)):
-    fw.write(str(i) + ' ')
-    fw.write(str(int(len(neighborPart[i])/5)) + ' ')
-    for j in range(len(neighborPart[i])):
-        fw.write(str(neighborPart[i][j]) + ' ')
-    fw.write(str('\n'))
-
-j = 1
-while j <= len(mergedPartitionTerminal):
-    fw.write(str(mergedPartitionTerminal[j-1]) + ' ')
-    fw.write(str(mergedPartitionTerminal[j]) + ' ')
-    fw.write(str(int(mergedPartitionTerminal[j+1])))
-    fw.write('\n')
-    j += 3
-fw.close()
-os.rename('Tinkerd_MST_Instance.txt', 'P' + str(n) + '_' + str(terminalNum) + '_' + str(portal) + '.txt')
+k = int(terminalNum/(powFlag*powFlag))
+kSub = terminalNum-(k*powFlag*powFlag) #추가할 터미널 수
+checknum = 0
+while checknum < count:
+    i = 0
+    coordinates = [[] for i in range(k)]
+    i = 0
+    terminalPart = [[] for i in range(powFlag*powFlag)] #각 비율에 맞추어 저장한 터미널들 배열
+    randomAxisX = []
+    randomAxisY = []
+    makeRandomCoorForAxis(randomAxisX)
+    makeRandomCoorForAxis(randomAxisY)
+    nPart = [[] for i in range(powFlag)]#dividePart를 통해 좌하단 우상단 저장하기위한 보조 배열
+    dPart = [[] for i in range(powFlag*powFlag)] #dividePart를 통해 좌하단 우상단 저장하는 배열
+    num = 0
+    q = 0
+    p = 4
+    cnt = 0
+    dividePartition (powFlag)
+    mergeNum = []
+    chooseMergePartition()
+    mergedPartitionTerminal = []
+    mergedPartitiondPart = []
+    makeRandomXY()
+    addSubTerminal(kSub)
+    doMerge()
+    i = 0
+    mergedPartitionFourPart = [[] for i in range(len(mergedPartitiondPart))]
+    i = 0
+    neighborPart = [[] for i in range(len(mergedPartitiondPart))]
+    makeFourCoor()
+    findNeighbors()
+    addPartitionNum()
+    ##파일입출력
+    fw=open("Tinkerd_MST_Instance.txt", "w")
+    fw.write(str(n) + '\n')
+    fw.write(str(terminalNum) + '\n')
+    fw.write(str(portal) + '\n')
+    i = 0
+    j = 0
+    for i in range (len(neighborPart)):
+        fw.write(str(i) + ' ')
+        fw.write(str(int(len(neighborPart[i])/5)) + ' ')
+        for j in range(len(neighborPart[i])):
+            fw.write(str(neighborPart[i][j]) + ' ')
+        fw.write(str('\n'))
+    j = 1
+    while j <= len(mergedPartitionTerminal):
+        fw.write(str(mergedPartitionTerminal[j-1]) + ' ')
+        fw.write(str(mergedPartitionTerminal[j]) + ' ')
+        fw.write(str(int(mergedPartitionTerminal[j+1])))
+        fw.write('\n')
+        j += 3
+    fw.close()
+    print(checknum)
+    os.rename('Tinkerd_MST_Instance.txt', 'P' + str(n) + '_' + str(terminalNum) + '_' + str(portal) + '_' + str(checknum) + '.txt')
+    checknum = checknum + 1
 
 
