@@ -310,7 +310,7 @@ while checknum < count:
     fw.write(str(n) + '\n')
     fw.write(str(terminalNum) + '\n')
     fw.write(str(portal) + '\n')
-    i = 0
+    i = 1
     j = 0
     for i in range (len(neighborPart)):
         fw.write(str(i) + ' ')
