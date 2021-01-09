@@ -1,5 +1,4 @@
 import openpyxl
-
 wb = openpyxl.Workbook()
 sheet1 = wb.active
 cnt = 0
@@ -20,13 +19,9 @@ for j in range(10):
         sheet1.cell(row = 1, column = cnt+3,value = 'length')
         sheet1.cell(row = i+2, column = cnt+2,value = float(time))
         sheet1.cell(row = i+2, column = cnt+3,value = float(length))
-
-
     cnt = cnt+4
     Pnum = Pnum+100
 ##########이상 110~1010#####
-
-
 cnt = 0
 Pnum = 2010
 j = i = 0
